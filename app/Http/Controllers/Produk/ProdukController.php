@@ -20,7 +20,7 @@ class ProdukController extends Controller
             'totalKategori' => Kategori::count(),
             'totalStatus' => Status::count(),
         ];
-        return view('dashboard', $data);
+        return view('produk.index', $data);
     }
 
     public function store(Request $request)
