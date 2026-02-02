@@ -47,8 +47,14 @@
                 <p class="text-slate-500 mt-2">Silakan masukkan kredensial Anda</p>
             </div>
 
-            <form action="#" method="POST" class="space-y-6">
+            <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
+
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative mb-4">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
 
                 <div class="space-y-2">
                     <label class="text-sm font-semibold text-slate-700 ml-1">Email / Username</label>
@@ -92,11 +98,6 @@
                     Masuk Sekarang
                 </button>
             </form>
-
-            <p class="mt-8 text-center text-slate-500 text-sm">
-                Belum punya akses? <a href="#" class="text-indigo-600 font-bold hover:underline">Hubungi Admin
-                    IT</a>
-            </p>
         </div>
     </div>
 </body>
