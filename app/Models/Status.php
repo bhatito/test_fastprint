@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+
+class Status extends Model
+{
+    use HasUuids;
+
+    protected $primaryKey = 'id_status';
+    protected $fillable = ['nama_status'];
+}
