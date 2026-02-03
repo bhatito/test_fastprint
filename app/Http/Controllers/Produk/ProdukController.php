@@ -74,7 +74,7 @@ class ProdukController extends Controller
             'kategori_id.required' => 'Kategori wajib dipilih',
             'status_id.required'   => 'Status wajib dipilih',
         ]);
-        // Menghapus titik ribuan (misal: 10.000 menjadi 10000)
+
         $harga = (int) str_replace(['.', ','], '', $request->harga);
 
         Produk::where('id_produk', $id)->update([

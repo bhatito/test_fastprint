@@ -54,6 +54,7 @@
                             <h5 class="card-title">Kategori</h5>
                             <p class="card-text">Total Kategori</p>
                             <h2 class="fw-bold">{{ $totalKategori }}</h2>
+                            <a href="{{ route('kategori.index') }}" class="btn btn-primary mt-3">Lihat Kategori</a>
                         </div>
                     </div>
                 </div>
@@ -65,6 +66,8 @@
                             <h5 class="card-title">Status</h5>
                             <p class="card-text">Total Status</p>
                             <h2 class="fw-bold">{{ $totalStatus }}</h2>
+                            <a href="{{ route('status.index') }}" class="btn btn-primary mt-3">Lihat Status</a>
+
                         </div>
                     </div>
                 </div>

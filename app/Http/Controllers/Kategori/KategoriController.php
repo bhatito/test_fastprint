@@ -15,7 +15,6 @@ class KategoriController extends Controller
         return view('Kategori.index', compact('kategoris'));
     }
 
-
     public function store(Request $request)
     {
         $validated = $request->validate([

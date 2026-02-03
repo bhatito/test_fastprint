@@ -11,6 +11,11 @@
                         <div class="alert alert-success py-2 px-3 mb-0">
                             {{ session('success') }}
                         </div>
+                        <script>
+                            setTimeout(() => {
+                                document.querySelector('.alert-success')?.remove();
+                            }, 3000);
+                        </script>
                     @endif
 
                     <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalCreateKategori">
@@ -51,7 +56,6 @@
         </div>
     </div>
 
-    {{-- Modal Delete --}}
     @foreach ($kategoris as $k)
         <div class="modal fade" id="hapusKategori{{ $k->id_kategori }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
@@ -73,7 +77,6 @@
         </div>
     @endforeach
 
-    {{-- Modal Create --}}
     <div class="modal fade" id="modalCreateKategori" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form method="POST" action="{{ route('kategori.store') }}" class="modal-content">
@@ -96,7 +99,6 @@
         </div>
     </div>
 
-    {{-- Modal Edit --}}
     <div class="modal fade" id="modalEditKategori" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <form id="formEditKategori" method="POST" class="modal-content">
@@ -135,7 +137,6 @@
                 }
             });
 
-            // 2. Logic Edit AJAX
             $('body').on('click', '.btn-edit-trigger', function() {
                 const btn = $(this);
                 const id = btn.data('id');

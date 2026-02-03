@@ -27,8 +27,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3" href="{{ route('kategori.index') }}">
+                    <a class="nav-link px-3 {{ request()->is('kategori*') ? 'active fw-bold' : '' }}"
+                        href="{{ route('kategori.index') }}">
                         <i class="bi bi-tags me-1"></i> Kategori
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link px-3 {{ request()->is('status*') ? 'active fw-bold' : '' }}"
+                        href="{{ route('status.index') }}">
+                        <i class="bi bi-check-circle me-1"></i> Status
                     </a>
                 </li>
 
