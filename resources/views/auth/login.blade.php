@@ -72,8 +72,6 @@
                 <div class="space-y-2">
                     <div class="flex justify-between items-center ml-1">
                         <label class="text-sm font-semibold text-slate-700">Password</label>
-                        <a href="#" class="text-xs text-indigo-600 font-semibold hover:underline">Lupa
-                            Password?</a>
                     </div>
                     <div class="relative group">
                         <span

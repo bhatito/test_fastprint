@@ -7,6 +7,7 @@ use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class ProdukController extends Controller
 {
@@ -48,9 +49,18 @@ class ProdukController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        Produk::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Produk berhasil dihapus!');
+        $produk = Produk::findOrFail($request->id_produk);
+        $produk->delete();
+        return back()->with('success', 'Berhasil dihapus');
+    }
+
+
+    public function fetch()
+    {
+        Artisan::call('fastprint:fetch');
+
+        return redirect()->back()->with('success', 'Data produk berhasil diambil');
     }
 }
