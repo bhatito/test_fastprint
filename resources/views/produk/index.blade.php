@@ -3,27 +3,23 @@
 @section('content')
     <div class="container-fluid">
         <div class="card">
-
-            {{-- HEADER --}}
             <div class="card-header bg-white">
-                <div class="d-flex justify-content-between align-items-center gap-3">
+                <div class="d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold mb-0">
                         <i class="bi bi-box me-2"></i>Data Produk
                     </h5>
-
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mb-0 py-2 px-3">
+                            <i class="bi bi-check-circle me-1"></i>
+                            {{ session('success') }}
+                        </div>
+                        <script>
+                            setTimeout(() => {
+                                document.querySelector('.alert-success')?.remove();
+                            }, 3000);
+                        </script>
+                    @endif
                     <div class="d-flex align-items-center gap-2">
-                        @if (session('success'))
-                            <div class="alert alert-success mb-0 py-2 px-3">
-                                <i class="bi bi-check-circle me-1"></i>
-                                {{ session('success') }}
-                            </div>
-                            <script>
-                                setTimeout(() => {
-                                    document.querySelector('.alert-success')?.remove();
-                                }, 3000);
-                            </script>
-                        @endif
-
                         <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
                             data-bs-target="#modalCreateProduk">
                             <i class="bi bi-plus"></i> Tambah
@@ -32,7 +28,7 @@
                 </div>
             </div>
 
-            {{-- BODY --}}
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="produkTable" class="table table-hover align-middle w-100">
@@ -52,7 +48,7 @@
                                     <td>Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
                                     <td>{{ $p->kategori->nama_kategori ?? '-' }}</td>
                                     <td>
-                                        @if ($p->status->nama_status === 'bisa dijual')
+                                        @if ($p->status->nama_status == 'bisa dijual')
                                             <span class="badge bg-success-subtle text-success border border-success">
                                                 {{ $p->status->nama_status }}
                                             </span>
@@ -63,16 +59,12 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modalEditProduk" data-id="{{ $p->id_produk }}"
-                                            data-nama="{{ $p->nama_produk }}" data-harga="{{ $p->harga }}"
-                                            data-kategori="{{ $p->kategori_id }}" data-status="{{ $p->status_id }}">
+                                        <button class="btn btn-sm btn-warning btn-edit-trigger"
+                                            data-id="{{ $p->id_produk }}">
                                             Edit
                                         </button>
-
                                         <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modalHapusProduk" data-id="{{ $p->id_produk }}"
-                                            data-nama="{{ $p->nama_produk }}">
+                                            data-bs-target="#hapusProduk{{ $p->id_produk }}">
                                             Hapus
                                         </button>
                                     </td>
@@ -82,11 +74,38 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
-    {{-- ================= MODAL CREATE ================= --}}
+
+    @foreach ($produks as $p)
+        <div class="modal fade" id="hapusProduk{{ $p->id_produk }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <form method="POST" action="{{ route('produk.destroy', $p->id_produk) }}" class="modal-content">
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger fw-bold">
+                            <i class="bi bi-trash me-1"></i> Hapus Produk
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Yakin ingin menghapus produk
+                        <strong>{{ $p->nama_produk }}</strong>?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button class="btn btn-danger">Ya, Hapus</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+
     <div class="modal fade" id="modalCreateProduk" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <form method="POST" action="{{ route('produk.store') }}" class="modal-content">
@@ -104,10 +123,12 @@
                             <label class="form-label">Nama Produk</label>
                             <input type="text" name="nama_produk" class="form-control" required>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Harga</label>
                             <input type="number" name="harga" class="form-control" required>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Kategori</label>
                             <select name="kategori_id" class="form-select select2-js" required>
@@ -116,6 +137,7 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Status</label>
                             <select name="status_id" class="form-select select2-js" required>
@@ -135,28 +157,54 @@
         </div>
     </div>
 
-    {{-- ================= MODAL HAPUS ================= --}}
-    <div class="modal fade" id="modalHapusProduk" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" id="formHapusProduk" class="modal-content">
+    <div class="modal fade" id="modalEditProduk" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <form id="formEditProduk" method="POST" class="modal-content">
                 @csrf
-                @method('DELETE')
-
+                @method('PUT')
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold text-danger">
-                        <i class="bi bi-trash me-1"></i> Hapus Produk
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-pencil-square me-1"></i> Edit Produk
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    Yakin ingin menghapus produk
-                    <strong id="hapusNama"></strong>?
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nama Produk</label>
+                            <input type="text" name="nama_produk" id="edit_nama_produk" class="form-control"
+                                required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Harga</label>
+                            <input type="number" name="harga" id="edit_harga" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Kategori</label>
+                            <select name="kategori_id" id="edit_kategori_id" class="form-select select2-edit" required>
+                                @foreach ($kategoris as $k)
+                                    <option value="{{ $k->id_kategori }}">{{ $k->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select name="status_id" id="edit_status_id" class="form-select select2-edit" required>
+                                @foreach ($statuses as $s)
+                                    <option value="{{ $s->id_status }}">{{ $s->nama_status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button class="btn btn-danger">Ya, Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -165,9 +213,8 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            $('#produkTable').DataTable({
+        window.addEventListener('load', () => {
+            const table = $('#produkTable').DataTable({
                 responsive: true,
                 autoWidth: false,
                 pageLength: 10,
@@ -186,31 +233,48 @@
                 }
             });
 
+            table.columns.adjust().responsive.recalc();
+        });
+
+
+        window.addEventListener('load', () => {
             $('.select2-js').select2({
                 theme: 'bootstrap-5',
                 dropdownParent: $('#modalCreateProduk'),
                 width: '100%'
             });
+        });
+    </script>
 
-            // Modal Edit
-            document.getElementById('modalEditProduk')
-                .addEventListener('show.bs.modal', function(e) {
-                    const b = e.relatedTarget;
-                    editNama.value = b.dataset.nama;
-                    editHarga.value = b.dataset.harga;
-                    editKategori.value = b.dataset.kategori;
-                    editStatus.value = b.dataset.status;
-                    formEditProduk.action = `/produk/${b.dataset.id}`;
+    <script>
+        $(document).ready(function() {
+            $('.select2-js, .select2-edit').each(function() {
+                $(this).select2({
+                    theme: 'bootstrap-5',
+                    dropdownParent: $(this).closest('.modal'),
+                    width: '100%'
                 });
+            });
 
-            // Modal Hapus
-            document.getElementById('modalHapusProduk')
-                .addEventListener('show.bs.modal', function(e) {
-                    const b = e.relatedTarget;
-                    hapusNama.textContent = b.dataset.nama;
-                    formHapusProduk.action = `/produk/${b.dataset.id}`;
-                });
+            $('body').on('click', '.btn-edit-trigger', function() {
+                const btn = $(this);
+                const id = btn.data('id');
+                const originalHtml = btn.html();
 
+                btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
+
+                $.get(`/produk/${id}/edit`, function(data) {
+                        $('#formEditProduk').attr('action', `/produk/${data.id_produk}`);
+                        $('#edit_nama_produk').val(data.nama_produk);
+                        $('#edit_harga').val(data.harga);
+                        $('#edit_kategori_id').val(data.kategori_id).trigger('change');
+                        $('#edit_status_id').val(data.status_id).trigger('change');
+
+                        $('#modalEditProduk').modal('show');
+                    })
+                    .fail(() => alert("Gagal mengambil data!"))
+                    .always(() => btn.prop('disabled', false).html(originalHtml));
+            });
         });
     </script>
 @endpush

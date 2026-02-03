@@ -54,11 +54,17 @@ class ProdukController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan');
     }
 
+    public function edit($id)
+    {
+        $produk = Produk::where('id_produk', $id)->firstOrFail();
+        return response()->json($produk);
+    }
+
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
-            'harga'       => 'required|regex:/^[0-9.]+$/',
+            'harga'       => 'required',
             'kategori_id' => 'required|exists:kategoris,id_kategori',
             'status_id'   => 'required|exists:statuses,id_status',
         ], [
@@ -68,8 +74,8 @@ class ProdukController extends Controller
             'kategori_id.required' => 'Kategori wajib dipilih',
             'status_id.required'   => 'Status wajib dipilih',
         ]);
-
-        $harga = (int) str_replace('.', '', $validated['harga']);
+        // Menghapus titik ribuan (misal: 10.000 menjadi 10000)
+        $harga = (int) str_replace(['.', ','], '', $request->harga);
 
         Produk::where('id_produk', $id)->update([
             'nama_produk' => $validated['nama_produk'],
@@ -78,7 +84,7 @@ class ProdukController extends Controller
             'status_id'   => $validated['status_id'],
         ]);
 
-        return redirect()->back()->with('success', 'Produk berhasil diperbarui');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     public function destroy($id)

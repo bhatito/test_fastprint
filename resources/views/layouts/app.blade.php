@@ -23,14 +23,12 @@
 
 
     <style>
-        /* ===== GLOBAL ===== */
         body {
             background: #f4f6f9;
             font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
         }
 
-        /* ===== NAVBAR ===== */
         .navbar {
             background: linear-gradient(90deg, #4f46e5, #6366f1);
             box-shadow: 0 6px 18px rgba(0, 0, 0, .15);
@@ -50,20 +48,17 @@
             opacity: .85;
         }
 
-        /* ===== CONTENT ===== */
         .main-content {
             padding: 24px;
             min-height: calc(100vh - 120px);
         }
 
-        /* ===== CARD ===== */
         .card {
             border: none;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
         }
 
-        /* ===== DATATABLE FIX ===== */
         table.dataTable {
             width: 100% !important;
         }
@@ -77,7 +72,6 @@
             border-radius: 8px;
         }
 
-        /* ===== FOOTER ===== */
         footer {
             background: #111827;
             color: #9ca3af;
@@ -98,7 +92,6 @@
 
     @include('layouts.footer')
 
-    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

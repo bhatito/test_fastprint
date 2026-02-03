@@ -3,7 +3,6 @@
 @section('content')
     <div class="container-fluid">
         @if ($totalProduk == 0)
-            <!-- EMPTY STATE -->
             <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
                 <div class="text-center col-lg-6">
 
@@ -31,7 +30,6 @@
                 </div>
             </div>
         @else
-            <!-- DASHBOARD NORMAL -->
             <h1 class="mb-4 text-center">
                 <i class="bi bi-speedometer2"></i> Dashboard Overview
             </h1>

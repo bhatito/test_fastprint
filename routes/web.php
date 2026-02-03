@@ -19,6 +19,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [ProdukController::class, 'store'])->name('produk.store');
         Route::put('/{id}', [ProdukController::class, 'update'])->name('produk.update');
         Route::delete('/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+
+        // Route Baru untuk AJAX Edit
+        Route::get('/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+
+        // Route Fetch API yang sudah Anda buat
         Route::post('/fetch', [ProdukController::class, 'fetch'])->name('produk.fetch');
     });
 });
