@@ -16,9 +16,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('produk')->group(function () {
         Route::get('/', [ProdukController::class, 'index'])->name('produk.index');
-        Route::post('/store', [ProdukController::class, 'store'])->name('produk.store');
-        Route::put('/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
-        Route::delete('/destroy', [ProdukController::class, 'destroy'])->name('produk.destroy');
-        Route::post('/produk/fetch', [ProdukController::class, 'fetch'])->name('produk.fetch');
+        Route::post('/', [ProdukController::class, 'store'])->name('produk.store');
+        Route::put('/{id}', [ProdukController::class, 'update'])->name('produk.update');
+        Route::delete('/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+        Route::post('/fetch', [ProdukController::class, 'fetch'])->name('produk.fetch');
     });
 });

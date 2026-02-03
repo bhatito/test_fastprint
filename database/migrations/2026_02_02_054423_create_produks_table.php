@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->uuid('id_produk')->primary();
             $table->string('nama_produk');
-            $table->decimal('harga', 15, 2);
+            $table->unsignedBigInteger('harga');
             $table->foreignUuid('kategori_id')->constrained('kategoris', 'id_kategori');
             $table->foreignUuid('status_id')->constrained('statuses', 'id_status');
             $table->timestamps();
