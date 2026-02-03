@@ -5,7 +5,7 @@
                 style="width: 35px; height: 35px;">
                 <i class="bi bi-box-seam text-primary"></i>
             </div>
-            <span>Toko<span class="text-warning">Ku</span></span>
+            <span>Fast<span class="text-warning">Print</span></span>
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3" href="#">
+                    <a class="nav-link px-3" href="{{ route('kategori.index') }}">
                         <i class="bi bi-tags me-1"></i> Kategori
                     </a>
                 </li>
